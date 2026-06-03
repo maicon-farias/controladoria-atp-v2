@@ -132,6 +132,15 @@
             font-weight: bold;
             margin-left: 10px;
         }
+        .justificativa-text {
+            background: #e8f4e8;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin: 8px 0;
+            font-weight: 500;
+            color: #2e7d32;
+            border-left: 3px solid #2e7d32;
+        }
     </style>
 </head>
 <body>
@@ -152,19 +161,19 @@
                 • ✅ 56 clientes oficiais (32 Grupo A + 20 Grupo B + 4 Maite)<br/><br/>
                 Digite o nome do cliente e a demanda.<br/><br/>
                 <strong>Exemplos:</strong><br/>
-                • <em>"LA SANTE orientação de publicidade"</em> → Wagner ou Brunna<br/>
-                • <em>"IRCA termo de consentimento"</em> → Gabriela<br/>
-                • <em>"CLINICA NACIONAL contrato de curso"</em> → Wagner<br/><br/>
-                ✅ Retorno: <strong>Cliente + Grupo + Advogado + Regra aplicada</strong>
+                • <em>"TULER contrato prestação serviços"</em><br/>
+                • <em>"LA SANTE orientação de publicidade"</em><br/>
+                • <em>"IRCA termo de consentimento"</em><br/><br/>
+                ✅ Retorno: <strong>Cliente + Grupo + Advogado + Justificativa + Passo a passo</strong>
             </div>
         </div>
     </div>
     <div class="input-area">
-        <input type="text" id="userInput" placeholder="Ex: LA SANTE orientação de publicidade" autocomplete="off">
+        <input type="text" id="userInput" placeholder="Ex: TULER contrato prestação serviços" autocomplete="off">
         <button id="sendBtn">Distribuir →</button>
     </div>
     <div class="footer-note">
-        📌 V2 - Jun/2026 | Anyelle removida | 56 clientes | Busca inteligente por múltiplas palavras
+        📌 V2 - Jun/2026 | Anyelle removida | 56 clientes (32 A + 20 B + 4 Maite) | Busca inteligente
     </div>
 </div>
 
@@ -186,72 +195,64 @@
     // BASE DE DADOS OFICIAL V2 - 56 CLIENTES (32 A + 20 B + 4 MAITE)
     // ==============================================================
     const clientesDatabase = [
-        // ===== MAITE (4) =====
-        { nome: "GRUPO GABRIELLE TEIXEIRA - ESTETICA AVANCADA LTDA", grupo: "Maite", keywords: ["grupo gabrielle", "gabrielle teixeira", "gabrielle"] },
+        { nome: "GRUPO GABRIELLE TEIXEIRA - ESTETICA AVANCADA LTDA", grupo: "Maite", keywords: ["grupo gabrielle", "gabrielle teixeira"] },
         { nome: "LIFE CLINIC ODONTOLOGICA LTDA", grupo: "Maite", keywords: ["life clinic", "life"] },
         { nome: "AMANDA E GROVER SERVICOS MEDICOS LTDA", grupo: "Maite", keywords: ["amanda grover", "amanda e grover", "amanda"] },
         { nome: "AMIGOS DA ESTETICA SAUDE E BEM-ESTAR", grupo: "Maite", keywords: ["amigos da estetica", "amigos"] },
-        
-        // ===== GRUPO A (32) =====
-        { nome: "CLÍNICA NACIONAL DE REABILITACAO OROFACIAL LTDA", grupo: "A", keywords: ["clinica nacional", "nacional reabilitacao"] },
+        { nome: "CLÍNICA NACIONAL DE REABILITACAO OROFACIAL LTDA", grupo: "A", keywords: ["clinica nacional"] },
         { nome: "LA SANTE", grupo: "A", keywords: ["la sante", "sante"] },
-        { nome: "BC BOUTIQUE DO PAO DE LO LTDA", grupo: "A", keywords: ["bc boutique", "pao de lo"] },
+        { nome: "BC BOUTIQUE DO PAO DE LO LTDA", grupo: "A", keywords: ["bc boutique"] },
         { nome: "C&C ESTETICA LTDA", grupo: "A", keywords: ["c&c estetica"] },
-        { nome: "DR. M CLINIC LTDA", grupo: "A", keywords: ["dr. m clinic", "dr m clinic", "dr. m", "dr m"] },
-        { nome: "DOUTOR FRANCESCO LARA", grupo: "A", keywords: ["francesco lara", "doutor francesco"] },
-        { nome: "INSTITUTO LAIS SILVEIRA LTDA", grupo: "A", keywords: ["lais silveira", "instituto lais"] },
-        { nome: "CHAIB ODONTOLOGIA LTDA", grupo: "A", keywords: ["chaib", "chaib odontologia"] },
-        { nome: "PHACIS CLINIC LTDA", grupo: "A", keywords: ["phacis", "phacis clinic"] },
-        { nome: "INSTITUTO LUCIANA BEBBER DE HARMONIZACAO OROFACIAL E ESTETICA LTDA", grupo: "A", keywords: ["luciana bebber", "bebber"] },
-        { nome: "INSTITUTO LK PROCEDIMENTOS ESTETICOS LTDA", grupo: "A", keywords: ["lk procedimentos", "lk", "lk esteticos"] },
-        { nome: "INSTITUTO DE ENSINO E ESTETICA RUAH HAKADOSH LTDA", grupo: "A", keywords: ["ruah hakadosh", "instituto ruah"] },
-        { nome: "P. C DE OLIVEIRA TAMLOC", grupo: "A", keywords: ["tamloc", "p c oliveira"] },
-        { nome: "MARIELE TAVARES CARDOSO & CIA LTDA", grupo: "A", keywords: ["mariele tavares", "mariele"] },
-        { nome: "MAXILLO ORAL CARE LTDA", grupo: "A", keywords: ["maxillo", "maxillo oral"] },
-        { nome: "FACEHOF CLINICA DE HARMONIZACAO OROFACIAL LTDA", grupo: "A", keywords: ["facehof", "hof"] },
-        { nome: "JM ESTETICA AVANCADA LTDA", grupo: "A", keywords: ["jm estetica", "jm"] },
-        { nome: "CLINIC CURSOS DE ESTETICA LTDA", grupo: "A", keywords: ["clinic cursos", "cursos estetica"] },
-        { nome: "SEGALOTE ODONTOLOGIA LTDA", grupo: "A", keywords: ["segalote", "segalote odontologia"] },
-        { nome: "BC CLINIC HARMONIZACAO FACIAL LTDA", grupo: "A", keywords: ["bc clinic", "harmonizacao facial"] },
-        { nome: "CMI TRICOLOGIA E SAUDE CAPILAR LTDA", grupo: "A", keywords: ["cmi tricologia", "tricologia"] },
-        { nome: "AMANDA DORNELLES TAVARES", grupo: "A", keywords: ["amanda dornelles", "dornelles"] },
-        { nome: "ALICE REGIS GOMES", grupo: "A", keywords: ["alice regis", "alice"] },
-        { nome: "PIRES CLINICA ODONTOLOGICA LTDA", grupo: "A", keywords: ["pires clinica", "pires"] },
-        { nome: "WEVERTHON & LAISY LTDA", grupo: "A", keywords: ["weverthon", "laisy"] },
-        { nome: "MARINA DE CARVALHO CAMPOFIORITO", grupo: "A", keywords: ["marina carvalho", "campofiorito"] },
-        { nome: "J.J. GOMES CONSULTORIA LTDA", grupo: "A", keywords: ["jj gomes", "j j gomes"] },
-        { nome: "CLINIC ESTETICA ESSENCE LTDA", grupo: "A", keywords: ["essence", "estetica essence"] },
-        { nome: "PJ SERVICOS DE SAUDE LTDA", grupo: "A", keywords: ["pj servicos", "pj serviços"] },
-        { nome: "ESPACO FACIAL GESTAO DE MARCAS LTDA", grupo: "A", keywords: ["espaco facial", "gestao marcas"] },
-        { nome: "GODONTOLOGIA LTDA", grupo: "A", keywords: ["godontologia", "go", "godonto"] },
-        { nome: "INSTITUTO DE ODONTOLOGIA FAISSAL LTDA", grupo: "A", keywords: ["faissal", "instituto faissal"] },
-        
-        // ===== GRUPO B (20) =====
-        { nome: "IRCA CLINICA DE ESTETICA LTDA", grupo: "B", keywords: ["irca", "irca clinica"] },
-        { nome: "INSTITUTO KAREN GOMES ODONTOLOGIA LTDA", grupo: "B", keywords: ["karen gomes", "instituto karen"] },
-        { nome: "VIVA SPACE INSTITUTO SAUDE INTEGRADA E ESTETICA AVANCADA LTDA", grupo: "B", keywords: ["viva space", "space instituto"] },
-        { nome: "INSTITUTO BEL GUERRA", grupo: "B", keywords: ["bel guerra", "instituto bel"] },
-        { nome: "LUISA BRUM SOARES DIAS LTDA", grupo: "B", keywords: ["luisa brum", "luisa"] },
-        { nome: "BASSAN PEIXOTO ESTETICA LTDA", grupo: "B", keywords: ["bassan peixoto", "bassan"] },
-        { nome: "LA PRIMORE L.A. LTDA", grupo: "B", keywords: ["la primore", "primore"] },
-        { nome: "HARMONYFULL SAUDE ESTETICA LTDA", grupo: "B", keywords: ["harmonyfull", "harmony"] },
-        { nome: "CLINICA JOSIANE FERNANDES LTDA", grupo: "B", keywords: ["josiane fernandes", "clinica josiane"] },
-        { nome: "GIOVANNA GONZALEZ HARMONIZACAO FACIAL LTDA", grupo: "B", keywords: ["giovanna gonzalez", "gonzalez"] },
-        { nome: "CLINICA GALLI E CIA LTDA", grupo: "B", keywords: ["galli", "clinica galli"] },
-        { nome: "MARIANA BARBOSA GEORGES SOCIEDADE SIMPLES UNIPESSOAL LTDA", grupo: "B", keywords: ["mariana barbosa", "barbosa georges"] },
-        { nome: "CENTRO DE SAUDE E ESTETICA MERE MARIE LTDA", grupo: "B", keywords: ["mere marie", "centro mere"] },
-        { nome: "MARIANNE MORGAN ANDRADE DUARTE DE SA", grupo: "B", keywords: ["marianne morgan", "morgan andrade"] },
-        { nome: "VGX ESTETICA LTDA", grupo: "B", keywords: ["vgx", "vgx estetica"] },
-        { nome: "ANA FLAVIA NASCIMENTO LTDA", grupo: "B", keywords: ["ana flavia", "flavia nascimento"] },
-        { nome: "RBIO ACADEMY LTDA", grupo: "B", keywords: ["rbio", "rbio academy", "academy"] },
-        { nome: "CLINICA ODONTOLOGICA ALLEGRA LTDA", grupo: "B", keywords: ["allegra", "clinica allegra"] },
-        { nome: "TULER DIAGNOSTICO DE IMAGEM ESPECIALIZADO EM ODONTOLOGIA LTDA", grupo: "B", keywords: ["tuler", "diagnostico imagem", "tuler diagnostico"] },
-        { nome: "MGS SAUDE E ESTETICA LTDA", grupo: "B", keywords: ["mgs saude", "mgs", "mgs estetica"] }
+        { nome: "DR. M CLINIC LTDA", grupo: "A", keywords: ["dr. m clinic", "dr m clinic"] },
+        { nome: "DOUTOR FRANCESCO LARA", grupo: "A", keywords: ["francesco lara"] },
+        { nome: "INSTITUTO LAIS SILVEIRA LTDA", grupo: "A", keywords: ["lais silveira"] },
+        { nome: "CHAIB ODONTOLOGIA LTDA", grupo: "A", keywords: ["chaib"] },
+        { nome: "PHACIS CLINIC LTDA", grupo: "A", keywords: ["phacis"] },
+        { nome: "INSTITUTO LUCIANA BEBBER DE HARMONIZACAO OROFACIAL E ESTETICA LTDA", grupo: "A", keywords: ["luciana bebber"] },
+        { nome: "INSTITUTO LK PROCEDIMENTOS ESTETICOS LTDA", grupo: "A", keywords: ["lk procedimentos", "lk"] },
+        { nome: "INSTITUTO DE ENSINO E ESTETICA RUAH HAKADOSH LTDA", grupo: "A", keywords: ["ruah hakadosh"] },
+        { nome: "P. C DE OLIVEIRA TAMLOC", grupo: "A", keywords: ["tamloc"] },
+        { nome: "MARIELE TAVARES CARDOSO & CIA LTDA", grupo: "A", keywords: ["mariele tavares"] },
+        { nome: "MAXILLO ORAL CARE LTDA", grupo: "A", keywords: ["maxillo"] },
+        { nome: "FACEHOF CLINICA DE HARMONIZACAO OROFACIAL LTDA", grupo: "A", keywords: ["facehof"] },
+        { nome: "JM ESTETICA AVANCADA LTDA", grupo: "A", keywords: ["jm estetica"] },
+        { nome: "CLINIC CURSOS DE ESTETICA LTDA", grupo: "A", keywords: ["clinic cursos"] },
+        { nome: "SEGALOTE ODONTOLOGIA LTDA", grupo: "A", keywords: ["segalote"] },
+        { nome: "BC CLINIC HARMONIZACAO FACIAL LTDA", grupo: "A", keywords: ["bc clinic"] },
+        { nome: "CMI TRICOLOGIA E SAUDE CAPILAR LTDA", grupo: "A", keywords: ["cmi tricologia"] },
+        { nome: "AMANDA DORNELLES TAVARES", grupo: "A", keywords: ["amanda dornelles"] },
+        { nome: "ALICE REGIS GOMES", grupo: "A", keywords: ["alice regis"] },
+        { nome: "PIRES CLINICA ODONTOLOGICA LTDA", grupo: "A", keywords: ["pires clinica"] },
+        { nome: "WEVERTHON & LAISY LTDA", grupo: "A", keywords: ["weverthon"] },
+        { nome: "MARINA DE CARVALHO CAMPOFIORITO", grupo: "A", keywords: ["marina carvalho"] },
+        { nome: "J.J. GOMES CONSULTORIA LTDA", grupo: "A", keywords: ["jj gomes"] },
+        { nome: "CLINIC ESTETICA ESSENCE LTDA", grupo: "A", keywords: ["essence"] },
+        { nome: "PJ SERVICOS DE SAUDE LTDA", grupo: "A", keywords: ["pj servicos"] },
+        { nome: "ESPACO FACIAL GESTAO DE MARCAS LTDA", grupo: "A", keywords: ["espaco facial"] },
+        { nome: "GODONTOLOGIA LTDA", grupo: "A", keywords: ["godontologia"] },
+        { nome: "INSTITUTO DE ODONTOLOGIA FAISSAL LTDA", grupo: "A", keywords: ["faissal"] },
+        { nome: "IRCA CLINICA DE ESTETICA LTDA", grupo: "B", keywords: ["irca"] },
+        { nome: "INSTITUTO KAREN GOMES ODONTOLOGIA LTDA", grupo: "B", keywords: ["karen gomes"] },
+        { nome: "VIVA SPACE INSTITUTO SAUDE INTEGRADA E ESTETICA AVANCADA LTDA", grupo: "B", keywords: ["viva space"] },
+        { nome: "INSTITUTO BEL GUERRA", grupo: "B", keywords: ["bel guerra"] },
+        { nome: "LUISA BRUM SOARES DIAS LTDA", grupo: "B", keywords: ["luisa brum"] },
+        { nome: "BASSAN PEIXOTO ESTETICA LTDA", grupo: "B", keywords: ["bassan peixoto"] },
+        { nome: "LA PRIMORE L.A. LTDA", grupo: "B", keywords: ["la primore"] },
+        { nome: "HARMONYFULL SAUDE ESTETICA LTDA", grupo: "B", keywords: ["harmonyfull"] },
+        { nome: "CLINICA JOSIANE FERNANDES LTDA", grupo: "B", keywords: ["josiane fernandes"] },
+        { nome: "GIOVANNA GONZALEZ HARMONIZACAO FACIAL LTDA", grupo: "B", keywords: ["giovanna gonzalez"] },
+        { nome: "CLINICA GALLI E CIA LTDA", grupo: "B", keywords: ["galli"] },
+        { nome: "MARIANA BARBOSA GEORGES SOCIEDADE SIMPLES UNIPESSOAL LTDA", grupo: "B", keywords: ["mariana barbosa"] },
+        { nome: "CENTRO DE SAUDE E ESTETICA MERE MARIE LTDA", grupo: "B", keywords: ["mere marie"] },
+        { nome: "MARIANNE MORGAN ANDRADE DUARTE DE SA", grupo: "B", keywords: ["marianne morgan"] },
+        { nome: "VGX ESTETICA LTDA", grupo: "B", keywords: ["vgx"] },
+        { nome: "ANA FLAVIA NASCIMENTO LTDA", grupo: "B", keywords: ["ana flavia"] },
+        { nome: "RBIO ACADEMY LTDA", grupo: "B", keywords: ["rbio"] },
+        { nome: "CLINICA ODONTOLOGICA ALLEGRA LTDA", grupo: "B", keywords: ["allegra"] },
+        { nome: "TULER DIAGNOSTICO DE IMAGEM ESPECIALIZADO EM ODONTOLOGIA LTDA", grupo: "B", keywords: ["tuler", "tuller"] },
+        { nome: "MGS SAUDE E ESTETICA LTDA", grupo: "B", keywords: ["mgs"] }
     ];
     
-    // ==============================================================
-    // BUSCA INTELIGENTE (CLIENTE)
-    // ==============================================================
     function identificarCliente(textoDigitado) {
         const textoOriginal = textoDigitado.trim();
         const textoNormalizado = normalizarTexto(textoOriginal);
@@ -278,30 +279,14 @@
             }
             
             const nomeNormalizado = normalizarTexto(cliente.nome);
-            let todasPalavrasEncontradas = true;
-            let qtdPalavrasEncontradas = 0;
-            
             for (let palavra of palavrasBusca) {
                 if (nomeNormalizado.includes(palavra)) {
-                    qtdPalavrasEncontradas++;
-                } else {
-                    todasPalavrasEncontradas = false;
+                    pontuacao += palavra.length * 15;
+                    palavrasMatch++;
                 }
-            }
-            
-            if (todasPalavrasEncontradas && qtdPalavrasEncontradas === palavrasBusca.length) {
-                pontuacao = 500 + (palavrasBusca.length * 50);
-                palavrasMatch = palavrasBusca.length;
-            } else {
-                for (let palavra of palavrasBusca) {
-                    if (nomeNormalizado.includes(palavra)) {
-                        pontuacao += palavra.length * 10;
-                        palavrasMatch++;
-                    }
-                    for (let kw of cliente.keywords) {
-                        if (normalizarTexto(kw).includes(palavra) || kw.toLowerCase().includes(palavra)) {
-                            pontuacao += palavra.length * 5;
-                        }
+                for (let kw of cliente.keywords) {
+                    if (normalizarTexto(kw).includes(palavra) || kw.toLowerCase().includes(palavra)) {
+                        pontuacao += palavra.length * 8;
                     }
                 }
             }
@@ -315,277 +300,175 @@
             }
         }
         
-        if (melhorMatch && (melhorPontuacao > 20 || melhorPalavrasMatch >= 1)) {
+        if (melhorMatch && melhorPalavrasMatch >= 1) {
             return { nome: melhorMatch.nome, grupo: melhorMatch.grupo, isAssessorado: true };
         }
         return { nome: textoOriginal, grupo: "ato_isolado", isAssessorado: false };
     }
     
-    // ==============================================================
-    // IDENTIFICAR TIPO DE DEMANDA
-    // ==============================================================
     function identificarTipoDemanda(texto) {
         const t = texto.toLowerCase();
-        
-        // Publicidade/redes sociais - redistribuída (Anyelle saiu)
-        if (/publicidade|redes sociais|postagens|instagram|facebook|analise de redes|marketing digital|conteúdo digital|sugestão de post|orientação publicidade|publicidade irregular/i.test(t)) {
-            return "publicidade";
-        }
-        
-        // Termos de consentimento, uso de imagem - redistribuída
-        if (/termo de consentimento|termo de uso de imagem|termos diversos|aditivo simples|termo simples|troca de procedimento/i.test(t)) {
-            return "termos";
-        }
-        
-        // Contratos de cursos, paciente, mentoria - redistribuída
-        if (/contrato de curso|contrato de paciente|contrato de mentoria/i.test(t)) {
-            return "contrato_simples_especifico";
-        }
-        
-        // Orientações simples - redistribuída
-        if (/orientação simples|orientação|esclarecimento|dúvida/i.test(t) && !/publicidade/i.test(t)) {
-            return "orientacao_simples";
-        }
-        
-        // Vigilância/Franquia (exceção cruzada)
-        if (/vigilância|vigilancia|franquia/i.test(t)) {
-            return "vigilancia_franquia";
-        }
-        
-        // Resolução de paciente
-        if (/resolução paciente|problema paciente|paciente grave|paciente simples|paciente complicado|resolução com paciente|paciente reclamando/i.test(t)) {
-            return "resolucao_paciente";
-        }
-        
-        // Contratos complexos
-        if (/contrato complexo|societário|parceria|joint venture|holding|incorporação|cisão|fusão|acordo de acionistas|contrato empresarial|compra e venda de empresa/i.test(t)) {
-            return "contrato_complexo";
-        }
-        
-        // Contratos simples em geral
-        if (/contrato|comodato|locação|aluguel|compra|venda|cessão|doação|permuta/i.test(t)) {
-            return "contrato_simples";
-        }
-        
-        // Cobrança
-        if (/cobrança|cobranca|execução|dívida|divida|inadimplência|inadimplencia|mora|confissão de dívida|negociação de dívida/i.test(t)) {
-            return "cobranca";
-        }
-        
-        // Judicial
-        if (/petição|jec|juizado|inicial|contestação|recurso|apelação|agravo|embargos|processo ético|crm|cro|crbm|conselho|infração ética|defesa|apelação|embargos|agravo de instrumento|recurso especial|recurso extraordinário|habeas corpus|liminar|tutela|mandado de segurança/i.test(t)) {
-            return "judicial";
-        }
-        
+        if (/publicidade|redes sociais|instagram|facebook|orientação publicidade/i.test(t)) return "publicidade";
+        if (/termo de consentimento|termo de uso de imagem|aditivo simples|troca de procedimento/i.test(t)) return "termos";
+        if (/contrato de curso|contrato de paciente|contrato de mentoria/i.test(t)) return "contrato_simples_especifico";
+        if (/orientação simples|esclarecimento|dúvida/i.test(t) && !/publicidade/i.test(t)) return "orientacao_simples";
+        if (/vigilância|franquia/i.test(t)) return "vigilancia_franquia";
+        if (/resolução paciente|problema paciente|paciente grave|paciente simples/i.test(t)) return "resolucao_paciente";
+        if (/contrato complexo|societário|parceria|joint venture/i.test(t)) return "contrato_complexo";
+        if (/contrato|comodato|locação|aluguel|compra|venda|prestação de serviços/i.test(t)) return "contrato_simples";
+        if (/cobrança|execução|dívida|inadimplência/i.test(t)) return "cobranca";
+        if (/petição|jec|juizado|recurso|apelação|agravo|processo ético|crm|cro/i.test(t)) return "judicial";
         return "outros";
     }
     
     function detectarGravidadePaciente(texto) {
         const t = texto.toLowerCase();
-        if (/grave|gravíssimo|complicado|risco|internação|emergência|hospitalar|crítico|difícil|ameaça processar|já contratou advogado|intercorrência grave|risco de processo/i.test(t)) return "grave";
+        if (/grave|gravíssimo|complicado|risco|internação|ameaça processar/i.test(t)) return "grave";
         return "simples";
     }
     
-    // ==============================================================
-    // DISTRIBUIÇÃO V2 (ANYELLE REMOVIDA)
-    // ==============================================================
-    function distribuirAssessorado(clienteInfo, tipoDemanda, texto, regras) {
+    function distribuirAssessorado(clienteInfo, tipoDemanda, texto, regras, justificativa) {
         const grupo = clienteInfo.grupo;
         
-        // EXCEÇÃO CRUZADA: Vigilância/Franquia → Theivison sempre
         if (tipoDemanda === "vigilancia_franquia") {
-            regras.push(`🚨 EXCEÇÃO CRUZADA: Vigilância Sanitária ou Franquia → THEIVISON (única exceção do manual)`);
+            justificativa.push("🚨 EXCEÇÃO CRUZADA: Vigilância Sanitária ou Franquia → SEMPRE THEIVISON (única exceção do manual p.3 e p.5)");
+            regras.push("🚨 EXCEÇÃO CRUZADA: Vigilância Sanitária ou Franquia → THEIVISON");
             return "THEIVISON (Senior Grupo A)";
         }
         
-        // CLIENTE MAITE
         if (grupo === "Maite") {
-            regras.push(`👩‍⚖️ Cliente da Maite → MAITE (Coordenação)`);
+            justificativa.push("👩‍⚖️ Cliente da Maite → demanda para MAITE (Coordenação) - Manual p.2 e p.7");
+            regras.push("👩‍⚖️ Cliente da Maite → MAITE");
             return "MAITE (Coordenação)";
         }
         
         regras.push(`📂 REGRA 2: Cliente do Grupo ${grupo} → demanda no grupo`);
         
-        // ==============================================================
-        // DEMANDAS REDISTRIBUIDAS (ANYELLE SAIU)
-        // ==============================================================
-        
-        // Publicidade/redes sociais
         if (tipoDemanda === "publicidade") {
             if (grupo === "A") {
-                regras.push(`📢 ORIENTAÇÃO DE PUBLICIDADE (Anyelle saiu) → Grupo A: Wagner e Brunna`);
-                regras.push(`   → Sugestão: alternar entre Wagner e Brunna para equilibrar carga.`);
+                justificativa.push("📢 ORIENTAÇÃO DE PUBLICIDADE: Com a saída de Anyelle, redistribuída para Wagner e Brunna no Grupo A.");
                 return "WAGNER ou BRUNNA (alternar carga)";
-            } else if (grupo === "B") {
-                regras.push(`📢 ORIENTAÇÃO DE PUBLICIDADE (Anyelle saiu) → Grupo B: GABRIELA`);
+            } else {
+                justificativa.push("📢 ORIENTAÇÃO DE PUBLICIDADE: Com a saída de Anyelle, redistribuída para Gabriela no Grupo B.");
                 return "GABRIELA";
             }
         }
         
-        // Termos de consentimento, uso de imagem, aditivos simples
         if (tipoDemanda === "termos") {
             if (grupo === "A") {
-                regras.push(`📝 TERMOS (Anyelle saiu) → Grupo A: WAGNER`);
+                justificativa.push("📝 TERMOS: Com a saída de Anyelle, Wagner passou a ser responsável por termos no Grupo A.");
                 return "WAGNER";
-            } else if (grupo === "B") {
-                regras.push(`📝 TERMOS (Anyelle saiu) → Grupo B: GABRIELA ou MONIQUE`);
+            } else {
+                justificativa.push("📝 TERMOS: Com a saída de Anyelle, Gabriela e Monique passaram a ser responsáveis por termos no Grupo B.");
                 return "GABRIELA ou MONIQUE";
             }
         }
         
-        // Contratos de curso, paciente, mentoria
         if (tipoDemanda === "contrato_simples_especifico") {
             if (grupo === "A") {
-                regras.push(`📄 CONTRATO DE CURSO/PACIENTE/MENTORIA (Anyelle saiu) → Grupo A: WAGNER`);
+                justificativa.push("📄 CONTRATO DE CURSO/PACIENTE/MENTORIA: Com a saída de Anyelle, Wagner passou a ser responsável.");
                 return "WAGNER";
-            } else if (grupo === "B") {
-                regras.push(`📄 CONTRATO DE CURSO/PACIENTE/MENTORIA (Anyelle saiu) → Grupo B: GABRIELA`);
+            } else {
+                justificativa.push("📄 CONTRATO DE CURSO/PACIENTE/MENTORIA: Com a saída de Anyelle, Gabriela passou a ser responsável.");
                 return "GABRIELA";
             }
         }
         
-        // Orientações simples
         if (tipoDemanda === "orientacao_simples") {
             if (grupo === "A") {
-                regras.push(`💡 ORIENTAÇÃO SIMPLES (Anyelle saiu) → Grupo A: Wagner e Brunna`);
+                justificativa.push("💡 ORIENTAÇÃO SIMPLES: Com a saída de Anyelle, Wagner e Brunna passaram a ser responsáveis.");
                 return "WAGNER ou BRUNNA";
-            } else if (grupo === "B") {
-                regras.push(`💡 ORIENTAÇÃO SIMPLES (Anyelle saiu) → Grupo B: GABRIELA`);
+            } else {
+                justificativa.push("💡 ORIENTAÇÃO SIMPLES: Com a saída de Anyelle, Gabriela passou a ser responsável.");
                 return "GABRIELA";
             }
         }
         
-        // ==============================================================
-        // REGRAS NORMAIS DO GRUPO A
-        // ==============================================================
         if (grupo === "A") {
-            // Resolução de paciente
             if (tipoDemanda === "resolucao_paciente") {
-                const gravidade = detectarGravidadePaciente(texto);
-                if (gravidade === "grave") {
-                    regras.push(`🩺 Theivison: Paciente GRAVE no Grupo A`);
+                if (detectarGravidadePaciente(texto) === "grave") {
+                    justificativa.push("🩺 PACIENTE GRAVE: Theivison é responsável por casos graves no Grupo A.");
                     return "THEIVISON";
                 } else {
-                    regras.push(`🩺 Brunna: Resolução de paciente SIMPLES/MÉDIO no Grupo A`);
+                    justificativa.push("🩺 PACIENTE SIMPLES/MÉDIO: Brunna é especialista em resolução de paciente simples/médio.");
                     return "BRUNNA";
                 }
             }
-            
-            // Contrato complexo
             if (tipoDemanda === "contrato_complexo") {
-                regras.push(`📄 Theivison: CONTRATO COMPLEXO no Grupo A`);
+                justificativa.push("📄 CONTRATO COMPLEXO: Theivison é especialista em contratos complexos no Grupo A.");
                 return "THEIVISON";
             }
-            
-            // Contrato simples
             if (tipoDemanda === "contrato_simples") {
-                regras.push(`📄 CONTRATO SIMPLES no Grupo A → BRUNNA (especialidade)`);
+                justificativa.push("📄 CONTRATO SIMPLES: Brunna é responsável por contratos simples e médios no Grupo A.");
                 return "BRUNNA";
             }
-            
-            // Cobrança
             if (tipoDemanda === "cobranca") {
-                regras.push(`💰 Cobrança no Grupo A → WAGNER ou BRUNNA`);
+                justificativa.push("💰 COBRANÇA: Wagner e Brunna são responsáveis por cobranças no Grupo A.");
                 return "WAGNER ou BRUNNA";
             }
-            
-            // Judicial
-            if (tipoDemanda === "judicial") {
-                regras.push(`⚖️ Judicial no Grupo A → VERIFICAR COMPLEXIDADE`);
-                regras.push(`   → Complexo/Gravíssimo → THEIVISON`);
-                regras.push(`   → Simples/Médio → BRUNNA`);
-                return "THEIVISON (complexo) ou BRUNNA (simples)";
-            }
-            
-            regras.push(`🎯 Theivison (fallback): Demanda geral no Grupo A`);
+            justificativa.push("🎯 DEMANDA GERAL: Theivison é o sênior do Grupo A.");
             return "THEIVISON";
         }
         
-        // ==============================================================
-        // REGRAS NORMAIS DO GRUPO B
-        // ==============================================================
         if (grupo === "B") {
-            // Resolução de paciente
             if (tipoDemanda === "resolucao_paciente") {
-                const gravidade = detectarGravidadePaciente(texto);
-                if (gravidade === "grave") {
-                    regras.push(`🩺 Gabriela: Paciente GRAVE no Grupo B`);
+                if (detectarGravidadePaciente(texto) === "grave") {
+                    justificativa.push("🩺 PACIENTE GRAVE: Gabriela é responsável por casos graves no Grupo B.");
                     return "GABRIELA";
                 } else {
-                    regras.push(`🩺 Monique: Resolução de paciente SIMPLES/MÉDIO no Grupo B`);
+                    justificativa.push("🩺 PACIENTE SIMPLES/MÉDIO: Monique é especialista em resolução de paciente simples/médio.");
                     return "MONIQUE";
                 }
             }
-            
-            // Contrato complexo
             if (tipoDemanda === "contrato_complexo") {
-                regras.push(`📄 Gabriela: CONTRATO COMPLEXO no Grupo B (especialidade)`);
+                justificativa.push("📄 CONTRATO COMPLEXO: Gabriela é especialista em contratos complexos no Grupo B.");
                 return "GABRIELA";
             }
-            
-            // Contrato simples
             if (tipoDemanda === "contrato_simples") {
-                regras.push(`📄 CONTRATO SIMPLES no Grupo B → MONIQUE`);
+                justificativa.push("📄 CONTRATO SIMPLES: Monique é responsável por contratos simples no Grupo B.");
                 return "MONIQUE";
             }
-            
-            // Cobrança
             if (tipoDemanda === "cobranca") {
-                regras.push(`💰 Cobrança no Grupo B → MONIQUE`);
+                justificativa.push("💰 COBRANÇA: Monique é responsável por cobranças no Grupo B.");
                 return "MONIQUE";
             }
-            
-            // Judicial
-            if (tipoDemanda === "judicial") {
-                regras.push(`⚖️ Judicial no Grupo B → MONIQUE (preferência judicial no grupo)`);
-                return "MONIQUE";
-            }
-            
-            regras.push(`🎯 Gabriela (fallback): Demanda geral no Grupo B`);
+            justificativa.push("🎯 DEMANDA GERAL: Gabriela é a sênior do Grupo B.");
             return "GABRIELA";
         }
         
         return "Consultar Maite";
     }
     
-    function distribuirAtoIsolado(tipoDemanda, texto, regras) {
-        regras.push(`📋 TABELINHA DE ATOS ISOLADOS (Manual p.6)`);
-        
-        if (tipoDemanda === "publicidade" || tipoDemanda === "orientacao_simples") {
-            return "WAGNER ou BRUNNA (A) ou GABRIELA (B)";
-        }
-        if (tipoDemanda === "termos") return "WAGNER (A) ou GABRIELA (B)";
-        if (tipoDemanda === "contrato_simples_especifico") return "WAGNER (A) ou GABRIELA (B)";
+    function distribuirAtoIsolado(tipoDemanda, texto, regras, justificativa) {
+        justificativa.push("📋 ATO ISOLADO: Cliente não está na lista dos 56 assessorados.");
         if (tipoDemanda === "contrato_simples") return "BRUNNA (A) ou MONIQUE (B)";
         if (tipoDemanda === "contrato_complexo") return "THEIVISON (A) ou GABRIELA (B)";
-        if (tipoDemanda === "cobranca") return "WAGNER ou BRUNNA (A) ou MONIQUE (B)";
-        if (tipoDemanda === "resolucao_paciente") {
-            return detectarGravidadePaciente(texto) === "grave" ? "THEIVISON (A) ou GABRIELA (B)" : "BRUNNA (A) ou MONIQUE (B)";
-        }
+        if (tipoDemanda === "publicidade") return "WAGNER ou BRUNNA (A) ou GABRIELA (B)";
         return "REVEZAMENTO ENTRE GRUPOS (A/B)";
     }
     
-    // ==============================================================
-    // FUNÇÃO PRINCIPAL
-    // ==============================================================
     function distribuirDemanda(entrada) {
         const regras = [];
+        const justificativa = [];
+        
         regras.push("📌 PASSO 1: Identificando cliente na carteira (56 clientes V2)...");
         const clienteInfo = identificarCliente(entrada);
         
         if (clienteInfo.isAssessorado) {
             regras.push(`✅ Cliente: "${clienteInfo.nome}"`);
             regras.push(`🏷️ Grupo: ${clienteInfo.grupo === "A" ? "GRUPO A" : (clienteInfo.grupo === "B" ? "GRUPO B" : "MAITE")}`);
+            justificativa.push(`Cliente identificado como "${clienteInfo.nome}" do Grupo ${clienteInfo.grupo}.`);
         } else {
             regras.push(`🆕 Cliente NÃO LOCALIZADO → ATO ISOLADO`);
         }
         
         regras.push("🔎 PASSO 2: Verificando continuidade...");
-        if (/já tem processo|mesmo advogado|já existe contrato|em andamento com/i.test(entrada.toLowerCase())) {
+        if (/já tem processo|mesmo advogado/i.test(entrada.toLowerCase())) {
             const match = entrada.toLowerCase().match(/(theivison|brunna|wagner|gabriela|monique|maite)/i);
             if (match) {
                 regras.push(`🔄 REGRA 1: Continuidade → ${match[0]}`);
-                return { cliente: clienteInfo.nome, grupo: clienteInfo.grupo, advogado: match[0].toUpperCase(), regras: regras };
+                justificativa.push(`REGRA 1 (Continuidade): Já existe processo com ${match[0]} → manter mesmo advogado.`);
+                return { cliente: clienteInfo.nome, grupo: clienteInfo.grupo, advogado: match[0].toUpperCase(), regras: regras, justificativa: justificativa };
             }
         }
         regras.push("✅ Sem continuidade mencionada.");
@@ -594,15 +477,12 @@
         regras.push(`📋 PASSO 3: Tipo de demanda = "${tipoDemanda.toUpperCase().replace(/_/g, ' ')}"`);
         
         regras.push("🎯 PASSO 4 a 6: Aplicando regras V2 (Anyelle removida)...");
-        let advogado = clienteInfo.isAssessorado ? distribuirAssessorado(clienteInfo, tipoDemanda, entrada, regras) : distribuirAtoIsolado(tipoDemanda, entrada, regras);
+        let advogado = clienteInfo.isAssessorado ? distribuirAssessorado(clienteInfo, tipoDemanda, entrada, regras, justificativa) : distribuirAtoIsolado(tipoDemanda, entrada, regras, justificativa);
         
         regras.push("✅ Lançar no EasyJur.");
-        return { cliente: clienteInfo.nome, grupo: clienteInfo.grupo, advogado: advogado, regras: regras };
+        return { cliente: clienteInfo.nome, grupo: clienteInfo.grupo, advogado: advogado, regras: regras, justificativa: justificativa };
     }
     
-    // ==============================================================
-    // UI
-    // ==============================================================
     const chatArea = document.getElementById("chatArea");
     const inputEl = document.getElementById("userInput");
     const sendBtn = document.getElementById("sendBtn");
@@ -629,11 +509,14 @@
         
         const grupoDisplay = resultado.grupo === "A" ? "🅰️ GRUPO A" : (resultado.grupo === "B" ? "🅱️ GRUPO B" : (resultado.grupo === "Maite" ? "👩‍⚖️ MAITE" : "🆕 ATO ISOLADO"));
         
+        const justificativaHtml = `<div class="justificativa-text">📖 JUSTIFICATIVA:<br/>${resultado.justificativa.map(j => `• ${j}`).join('<br/>')}</div>`;
+        
         const html = `
             <div class="result-card">
                 <strong>📌 CLIENTE:</strong> ${resultado.cliente}<br/>
                 <strong>🏷️ GRUPO:</strong> ${grupoDisplay}<br/>
-                <strong>⚖️ ADVOGADO:</strong> <span style="font-size:1.2rem; font-weight:bold; color:#0b2b44;">${resultado.advogado}</span><br/><br/>
+                <strong>⚖️ ADVOGADO:</strong> <span style="font-size:1.2rem; font-weight:bold; color:#0b2b44;">${resultado.advogado}</span><br/>
+                ${justificativaHtml}<br/>
                 <div class="step-list">
                     <strong>📋 PASSO A PASSO (V2):</strong><br/>
                     ${resultado.regras.map(r => `• ${r}`).join('<br/>')}
