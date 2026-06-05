@@ -307,19 +307,40 @@
     }
     
     function identificarTipoDemanda(texto) {
-        const t = texto.toLowerCase();
-        if (/publicidade|redes sociais|instagram|facebook|orientação publicidade/i.test(t)) return "publicidade";
-        if (/termo de consentimento|termo de uso de imagem|aditivo simples|troca de procedimento/i.test(t)) return "termos";
-        if (/contrato de curso|contrato de paciente|contrato de mentoria/i.test(t)) return "contrato_simples_especifico";
-        if (/orientação simples|esclarecimento|dúvida/i.test(t) && !/publicidade/i.test(t)) return "orientacao_simples";
-        if (/vigilância|franquia/i.test(t)) return "vigilancia_franquia";
-        if (/resolução paciente|problema paciente|paciente grave|paciente simples/i.test(t)) return "resolucao_paciente";
-        if (/contrato complexo|societário|parceria|joint venture/i.test(t)) return "contrato_complexo";
-        if (/contrato|comodato|locação|aluguel|compra|venda|prestação de serviços/i.test(t)) return "contrato_simples";
-        if (/cobrança|execução|dívida|inadimplência/i.test(t)) return "cobranca";
-        if (/petição|jec|juizado|recurso|apelação|agravo|processo ético|crm|cro/i.test(t)) return "judicial";
-        return "outros";
-    }
+    const t = texto.toLowerCase();
+    
+    // Publicidade/redes sociais - redistribuída (Anyelle saiu)
+    if (/publicidade|redes sociais|instagram|facebook|orientação publicidade|publicidade irregular/i.test(t)) return "publicidade";
+    
+    // Termos de consentimento, uso de imagem, aditivos simples - CORRIGIDO para capturar "termo" isolado
+    if (/termo(\s+de\s+consentimento|\s+de\s+uso\s+de\s+imagem|\s+simples)?|aditivo simples|troca de procedimento/i.test(t)) return "termos";
+    
+    // Contratos de cursos, paciente, mentoria - redistribuída
+    if (/contrato de curso|contrato de paciente|contrato de mentoria/i.test(t)) return "contrato_simples_especifico";
+    
+    // Orientações simples - redistribuída
+    if (/orientação simples|esclarecimento|dúvida/i.test(t) && !/publicidade/i.test(t)) return "orientacao_simples";
+    
+    // Vigilância/Franquia (exceção cruzada)
+    if (/vigilância|franquia/i.test(t)) return "vigilancia_franquia";
+    
+    // Resolução de paciente
+    if (/resolução paciente|problema paciente|paciente grave|paciente simples|resolucao paciente/i.test(t)) return "resolucao_paciente";
+    
+    // Contratos complexos
+    if (/contrato complexo|societário|parceria|joint venture/i.test(t)) return "contrato_complexo";
+    
+    // Contratos simples em geral
+    if (/contrato|comodato|locação|aluguel|compra|venda|prestação de serviços/i.test(t)) return "contrato_simples";
+    
+    // Cobrança
+    if (/cobrança|execução|dívida|inadimplência/i.test(t)) return "cobranca";
+    
+    // Judicial
+    if (/petição|jec|juizado|recurso|apelação|agravo|processo ético|crm|cro/i.test(t)) return "judicial";
+    
+    return "outros";
+}
     
     function detectarGravidadePaciente(texto) {
         const t = texto.toLowerCase();
