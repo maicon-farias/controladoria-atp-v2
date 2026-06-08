@@ -315,40 +315,40 @@
     // TIPO DE DEMANDA - CORRIGIDO (termo sozinho)
     // ==============================================================
     function identificarTipoDemanda(texto) {
-        const t = texto.toLowerCase();
-        
-        // Publicidade
-        if (/publicidade|redes sociais|instagram|facebook|orientação publicidade|publicidade irregular/i.test(t)) return "publicidade";
-        
-        // Termos - CORRIGIDO: captura "termo" sozinho, "termo simples", "termo de consentimento", etc.
-        if (/^termo(\s|$)|termo\s+simples|termo\s+de\s+consentimento|termo\s+de\s+uso\s+de\s+imagem|aditivo simples|troca de procedimento/i.test(t)) return "termos";
-        
-        // Contratos específicos
-        if (/contrato de curso|contrato de paciente|contrato de mentoria/i.test(t)) return "contrato_simples_especifico";
-        
-        // Orientações simples
-        if (/orientação simples|esclarecimento|dúvida/i.test(t) && !/publicidade/i.test(t)) return "orientacao_simples";
-        
-        // Vigilância/Franquia
-        if (/vigilância|franquia/i.test(t)) return "vigilancia_franquia";
-        
-        // Resolução paciente
-        if (/resolução paciente|problema paciente|paciente grave|paciente simples|resolucao paciente/i.test(t)) return "resolucao_paciente";
-        
-        // Contratos complexos
-        if (/contrato complexo|societário|parceria|joint venture/i.test(t)) return "contrato_complexo";
-        
-        // Contratos simples
-        if (/contrato|comodato|locação|aluguel|compra|venda|prestação de serviços/i.test(t)) return "contrato_simples";
-        
-        // Cobrança
-        if (/cobrança|execução|dívida|inadimplência/i.test(t)) return "cobranca";
-        
-        // Judicial
-        if (/petição|jec|juizado|recurso|apelação|agravo|processo ético|crm|cro/i.test(t)) return "judicial";
-        
-        return "outros";
-    }
+    const t = texto.toLowerCase();
+    
+    // Publicidade
+    if (/publicidade|redes sociais|instagram|facebook|orientação publicidade|publicidade irregular/i.test(t)) return "publicidade";
+    
+    // Termos - CORRIGIDO: inclui "termo de acordo" e "acordo simples"
+    if (/^termo(\s|$)|termo\s+simples|termo\s+de\s+consentimento|termo\s+de\s+uso\s+de\s+imagem|termo\s+de\s+acordo|acordo\s+simples|aditivo simples|troca de procedimento/i.test(t)) return "termos";
+    
+    // Contratos específicos
+    if (/contrato de curso|contrato de paciente|contrato de mentoria/i.test(t)) return "contrato_simples_especifico";
+    
+    // Orientações simples
+    if (/orientação simples|esclarecimento|dúvida/i.test(t) && !/publicidade/i.test(t)) return "orientacao_simples";
+    
+    // Vigilância/Franquia
+    if (/vigilância|franquia/i.test(t)) return "vigilancia_franquia";
+    
+    // Resolução paciente
+    if (/resolução paciente|problema paciente|paciente grave|paciente simples|resolucao paciente/i.test(t)) return "resolucao_paciente";
+    
+    // Contratos complexos
+    if (/contrato complexo|societário|parceria|joint venture/i.test(t)) return "contrato_complexo";
+    
+    // Contratos simples
+    if (/contrato|comodato|locação|aluguel|compra|venda|prestação de serviços/i.test(t)) return "contrato_simples";
+    
+    // Cobrança
+    if (/cobrança|execução|dívida|inadimplência/i.test(t)) return "cobranca";
+    
+    // Judicial
+    if (/petição|jec|juizado|recurso|apelação|agravo|processo ético|crm|cro/i.test(t)) return "judicial";
+    
+    return "outros";
+}
     
     function detectarGravidadePaciente(texto) {
         const t = texto.toLowerCase();
