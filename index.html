@@ -548,27 +548,49 @@
     }
     
     function processarInput(userText) {
-        if (!userText.trim()) return;
-        addMessage("user", userText, true);
-        const resultado = distribuirDemanda(userText);
-        
-        const grupoDisplay = resultado.grupo === "A" ? "🅰️ GRUPO A" : (resultado.grupo === "B" ? "🅱️ GRUPO B" : (resultado.grupo === "Maite" ? "👩‍⚖️ MAITE" : "🆕 ATO ISOLADO"));
-        
-        const html = `
-            <div class="result-card">
-                <strong>📌 CLIENTE:</strong> ${resultado.cliente}<br/>
-                <strong>🏷️ GRUPO:</strong> ${grupoDisplay}<br/>
-                <strong>⚖️ ADVOGADO:</strong> <span style="font-size:1.2rem; font-weight:bold; color:#0b2b44;">${resultado.advogado}</span><br/><br/>
-                <div class="step-list">
-                    <strong>📋 PASSO A PASSO:</strong><br/>
-                    ${resultado.regras.map(r => `• ${r}`).join('<br/>')}
-                </div>
-            </div>
-            <hr/>
-            <small>✅ Distribuir no EasyJur para o advogado indicado.</small>
-        `;
-        addMessage("bot", html, false);
+    if (!userText.trim()) return;
+    addMessage("user", userText, true);
+    const resultado = distribuirDemanda(userText);
+    
+    // Extrai a justificativa (a regra mais importante que definiu o advogado)
+    let justificativa = "";
+    if (resultado.regras && resultado.regras.length > 0) {
+        // Procura a regra que contém "EXCEÇÃO", "REGRA", ou a penúltima regra
+        const regraPrincipal = resultado.regras.find(r => 
+            r.includes("EXCEÇÃO") || 
+            r.includes("REGRA") || 
+            r.includes("Theivison") ||
+            r.includes("Brunna") ||
+            r.includes("Wagner") ||
+            r.includes("Gabriela") ||
+            r.includes("Monique") ||
+            r.includes("Maite")
+        );
+        if (regraPrincipal) {
+            justificativa = regraPrincipal;
+        } else {
+            justificativa = resultado.regras[resultado.regras.length - 2] || resultado.regras[0];
+        }
     }
+    
+    const grupoDisplay = resultado.grupo === "A" ? "🅰️ GRUPO A" : (resultado.grupo === "B" ? "🅱️ GRUPO B" : (resultado.grupo === "Maite" ? "👩‍⚖️ MAITE" : "🆕 ATO ISOLADO"));
+    
+    const html = `
+        <div class="result-card">
+            <strong>📌 CLIENTE:</strong> ${resultado.cliente}<br/>
+            <strong>🏷️ GRUPO:</strong> ${grupoDisplay}<br/>
+            <strong>⚖️ ADVOGADO:</strong> <span style="font-size:1.2rem; font-weight:bold; color:#0b2b44;">${resultado.advogado}</span><br/>
+            <strong>📖 JUSTIFICATIVA:</strong> ${justificativa}<br/><br/>
+            <div class="step-list">
+                <strong>📋 PASSO A PASSO:</strong><br/>
+                ${resultado.regras.map(r => `• ${r}`).join('<br/>')}
+            </div>
+        </div>
+        <hr/>
+        <small>✅ Distribuir no EasyJur para o advogado indicado.</small>
+    `;
+    addMessage("bot", html, false);
+}
     
     sendBtn.addEventListener("click", () => { processarInput(inputEl.value); inputEl.value = ""; });
     inputEl.addEventListener("keypress", (e) => { if (e.key === "Enter") { processarInput(inputEl.value); inputEl.value = ""; } });
